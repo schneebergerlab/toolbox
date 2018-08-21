@@ -1,0 +1,93 @@
+###########################################################################
+# Mummer and MummerParser
+###########################################################################
+perl ~/pgsp/Assembly/WGA/split_chr.pl C24.SHORE.scaffolds.2010-06-08.500bp.fa
+
+perl ~/pgsp/Assembly/WGA/Mummer_Parser.pl Ler-1 Chr1.fa /ebio/abt6_analysis/nobackup/data/Shore/Plants/ATH/chromosomes/chr1.fas /ebio/abt6_analysis/nobackup/data/Shore/Plants/ATH/TAIR8_Masked/Annotation/TAIR8_GFF3_genes_transposons.gff Chr1 100 Parse_100
+
+###########################################################################
+# Mummer whole genome alignment of draft sequence to reference sequence
+###########################################################################
+
+nucmer --prefix=myMum /ebio/abt6_analysis/nobackup/data/Shore/Plants/ATH/chromosomes/chr1.fas SHORE.scaffolds.fa
+
+nucmer --mum -l 100 -c 150 -f --prefix=myMum /ebio/abt6_analysis/nobackup/data/Shore/Plants/ATH/chromosomes/chr1.fas SHORE.scaffolds.fa
+
+delta-filter -q myMum.delta > myMum.filter
+
+show-coords -rcl myMum.filter > myMum.coords
+
+show-tiling myMum.filter > myMum.tiling
+
+show-aligns -r myMum.filter Chr1 Scaffold_1 > alignments.txt
+
+mummerplot myMum.filter -R /ebio/abt6_analysis/nobackup/data/Shore/Plants/ATH/chromosomes/chr1.fas -Q SHORE.scaffolds.fa --filter --layout
+
+mapview myMum.coords -n 1 -f pdf
+
+
+###########################################################################
+# Set IDs unique for the whole genome 
+###########################################################################
+
+nucmer --prefix=myMum /ebio/abt6_analysis/nobackup/data/Shore/Plants/ATH/chromosomes/chr1.fas SHORE.scaffolds.fa 
+
+delta-filter -q myMum.delta > myMum.filter
+
+mummerplot myMum.filter -R /ebio/abt6_analysis/nobackup/data/Shore/Plants/ATH/chromosomes/chr1.fas -Q SHORE.scaffolds.fa --filter --layout -t png
+
+perl ~/pgsp/Assembly/Scaffolding/finalize_scaffold_ids.pl Chr1Left out.gp SHORE.scaffolds.fa > SHORE.scaffolds.id.fa
+
+
+for i in 1 2 3 4 5; do cd chr${i}_left_arm/Scaffold_100_6_6_final; nucmer --prefix=myMum /ebio/abt6_analysis/nobackup/data/Shore/Plants/ATH/chromosomes/chr${i}.fas SHORE.scaffolds.fa; delta-filter -q myMum.delta > myMum.filter; mummerplot myMum.filter -R /ebio/abt6_analysis/nobackup/data/Shore/Plants/ATH/chromosomes/chr${i}.fas -Q SHORE.scaffolds.fa --filter --layout -t png; perl ~/pgsp/Assembly/Scaffolding/finalize_scaffold_ids.pl Chr${i}Left out.gp SHORE.scaffolds.fa > SHORE.scaffolds.id.fa; cd ../../; done
+
+for i in 1 2 3 4 5; do cd chr${i}_right_arm/Scaffold_100_6_6_final; nucmer --prefix=myMum /ebio/abt6_analysis/nobackup/data/Shore/Plants/ATH/chromosomes/chr${i}.fas SHORE.scaffolds.fa; delta-filter -q myMum.delta > myMum.filter; mummerplot myMum.filter -R /ebio/abt6_analysis/nobackup/data/Shore/Plants/ATH/chromosomes/chr${i}.fas -Q SHORE.scaffolds.fa --filter --layout -t png; perl ~/pgsp/Assembly/Scaffolding/finalize_scaffold_ids.pl Chr${i}Right out.gp SHORE.scaffolds.fa > SHORE.scaffolds.id.fa; cd ../../; done
+
+
+
+
+##############################################################################################
+# Pecan
+# http://www.ebi.ac.uk/~bjp/pecan/
+# Installation: /ebio/abt6_projects/backup/solexa_tools/WholeGenomeAlignment/pecan_v0.8
+##############################################################################################
+
+java -cp /ebio/abt6_projects/backup/solexa_tools/WholeGenomeAlignment/pecan_v0.8/pecan_v0.8.jar bp.pecan.Pecan -J /ebio/abt6_projects/backup/solexa_tools/WholeGenomeAlignment/exonerate-2.2.0-x86_64/bin/exonerate -F TAIR8.v1.Masked.fa Bur-0_Scaffolds_minsize500bp_Q10.fa -E '(a,b);' -H 9 11 13
+
+
+
+
+##############################################################################################
+# Mauve
+# http://gel.ahabs.wisc.edu/mauve/download.php
+# Installation: /ebio/abt6_projects/backup/solexa_tools/WholeGenomeAlignment/mauve_2.3.1
+##############################################################################################
+
+Gui:
+Mauve
+
+Terminal:
+/ebio/abt6_projects/backup/solexa_tools/WholeGenomeAlignment/mauve_2.3.1/linux-x64/progressiveMauve --output=/ebio/abt6_projects/backup/data/solexa_analysis/ATH/Genome/C24/Assembly/Complete_final/testme/myMauve --output-guide-tree=myMauve.guide_tree --backbone-output=myMauve.backbone TAIR8.v1.Masked.fa C24_Scaffolds_minsize500bp_Q10.fa 
+
+/ebio/abt6_projects/backup/solexa_tools/WholeGenomeAlignment/mauve_2.3.1/linux-x64/progressiveMauve --output=alignment1 --skip-refinement --weight=200 --output-guide-tree=alignment1.guide_tree --backbone-output=alignment1.backbone chr1_left_arm.fa C24_Scaffolds_minsize500bp_Q10.fa
+
+###############################################################################################
+# Lagan
+# http://lagan.stanford.edu/lagan_web/index.shtml
+# Installation: /ebio/abt6_projects/backup/solexa_tools/WholeGenomeAlignment/lagan20
+###############################################################################################
+
+Crashed - test smaller files (e.g. chromosome arm)
+
+
+
+###############################################################################################
+# TBA/Multiz/Mulan
+# http://mulan.dcode.org/index.php
+# http://mulan.dcode.org/mulanInstructions.php
+# http://www.bx.psu.edu/miller_lab/
+# Installation: /ebio/abt6_projects/backup/solexa_tools/WholeGenomeAlignment/multiz-tba.012109
+###############################################################################################
+
+TODO
+
