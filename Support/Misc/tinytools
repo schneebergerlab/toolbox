@@ -1,0 +1,261 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jun 19 15:36:01 2017
+
+@author: goel
+"""
+
+import argparse
+import os
+import sys
+
+def unlist(nestedList):
+    """Take a nested-list as input and return a 1d list of all elements in it"""
+    outList = []
+    for i in nestedList:
+        if type(i) in (list, np.ndarray):
+            outList.extend(unlist(i))
+        else:
+            outList.append(i)
+    return(outList)
+
+def getValues(l, index):
+    """from list l get the values at indices specified by index"""
+    return [l[i] for i in index]
+			
+def getColors(colorPalette, numOfCol):
+	return([colorPalette(i/numOfCol) for i in range(numOfCol)])
+
+def plotDensity(data):
+    density = gaussian_kde(data)
+    xs = np.linspace(min(data), max(data),1000)
+    density.covariance_factor = lambda : .2
+    density._compute_covariance()
+    plt.plot(xs,density(xs))
+    plt.show()
+
+def subList(lst1, lst2):
+    return(list(map(op.sub,lst1, lst2)))
+    
+def intersect(*lists):
+    return reduce(np.intersect1d,list(lists))
+    
+def extractSeq(args):
+    import pandas as pd
+    filePath = args.fasta.name
+    if args.fin == None:
+       seqID = args.chr
+       start = args.start
+       end = args.end
+       querySeq = [fasta for fasta in SeqIO.parse(filePath,'fasta') if fasta.id == seqID][0]
+       querySeq.seq = querySeq.seq[start:end+1]
+       SeqIO.write(querySeq,args.o.name,"fasta")
+    else:
+        fin = pd.read_table(args.fin.name, header = None)
+        fin.columns = ["chr","start","end"]
+        fin.sort_values(["chr","start","end"], inplace = True)
+        outF = deque()
+        for fasta in SeqIO.parse(filePath,'fasta'):
+            if fasta.id in fin.chr.values:
+                chrData = fin.loc[fin.chr == fasta.id]
+                for row in chrData.itertuples(index=False):
+                    outF.append(SeqRecord(seq=fasta.seq[row.start:row.end], id="_".join(map(str,row)), description=""))
+        SeqIO.write(outF,args.o.name,"fasta")
+                    
+def subnuc(args):
+    fasta = args.fasta.name
+    querySeq = [fasta for fasta in SeqIO.parse(fasta,'fasta')]
+    for i in range(len(querySeq)):
+        querySeq[i].seq = Seq(str(querySeq[i].seq).replace(args.q, args.t))
+#    print(querySeq)
+    
+    if args.o == None:
+        fout = fasta+"_edited"
+    else:
+        fout = args.o
+    with open(fout,"w") as f:
+        spacer = ""
+        for seq in querySeq:
+            f.write(spacer)
+            f.write(">"+seq.id+" "+seq.description+"\n")
+            f.write('\n'.join(str(seq.seq)[i:i+60] for i in range(0, len(seq.seq), 60)))
+            if spacer == "":
+                spacer = "\n"
+#        SeqIO.write(querySeq,,"fasta")
+#    else:
+#        SeqIO.write(querySeq,args.o.name,"fasta")
+        
+         
+def fileRemove(fName):
+    try:
+        os.remove(fName)
+    except OSError as e:
+        if e.errno != 2:    ## 2 is the error number when no such file or directory is present https://docs.python.org/2/library/errno.html
+            raise
+            
+            
+def total_size(o, handlers={}, verbose=False):
+    """ Returns the approximate memory footprint an object and all of its contents.
+
+    Automatically finds the contents of the following builtin containers and
+    their subclasses:  tuple, list, deque, dict, set and frozenset.
+    To search other containers, add handlers to iterate over their contents:
+
+        handlers = {SomeContainerClass: iter,
+                    OtherContainerClass: OtherContainerClass.get_elements}
+
+    """
+    dict_handler = lambda d: chain.from_iterable(d.items())
+    all_handlers = {tuple: iter,
+                    list: iter,
+                    deque: iter,
+                    dict: dict_handler,
+                    set: iter,
+                    frozenset: iter,
+                   }
+    all_handlers.update(handlers)     # user handlers take precedence
+    seen = set()                      # track which object id's have already been seen
+    default_size = getsizeof(0)       # estimate sizeof object without __sizeof__
+
+    def sizeof(o):
+        if id(o) in seen:       # do not double count the same object
+            return 0
+        seen.add(id(o))
+        s = getsizeof(o, default_size)
+
+        if verbose:
+            print(s, type(o), repr(o), file=stderr)
+
+        for typ, handler in all_handlers.items():
+            if isinstance(o, typ):
+                s += sum(map(sizeof, handler(o)))
+                break
+        return s
+
+    return sizeof(o)
+
+def getScaf(args):
+    fin = args.fasta.name
+    n = args.n
+    fout = args.o
+    gen = {fasta.id:fasta for fasta in parse(fin,'fasta')}
+    chromLen = {chrom.id:len(chrom.seq) for chrom in gen.values()}
+    
+    chrID = [np.random.choice(list(chromLen.keys()), 1)[0] for i in range(n)]
+    cutoff = [np.random.randint(10000,chromLen[i] - 10000, 1)[0] for i in chrID]
+    coords = sorted(list(zip(chrID, cutoff)))
+    
+    cid = ""
+    pos = -1
+    scafGenome = []
+    for i in range(len(coords)):
+        coord = coords[i]
+        if coord[0] != cid:
+            if cid in gen:
+                scafGenome.append(SeqRecord(seq=gen[cid][pos:chromLen[cid]].seq, id = cid+"_"+str(chromLen[cid]), description=""))
+            
+            cid = coord[0]
+            pos = 0
+        scafGenome.append(SeqRecord(seq=gen[cid][pos:coord[1]].seq, id = cid+"_"+str(coord[1]), description=""))
+        pos = coord[1]
+    scafGenome.append(SeqRecord(seq=gen[cid][pos:chromLen[cid]].seq, id = cid+"_"+str(chromLen[cid]), description=""))
+    write(scafGenome,fout,"fasta")
+
+def seqsize(args):
+    fin = args.fasta.name
+    [print(fasta.id, len(fasta.seq), sep="\t") for fasta in parse(fin,'fasta')]
+
+def filsize(args):
+    """
+    Remove molecules which are smaller than the specified threshold
+    """
+    fin = args.fasta.name
+    size= args.size
+    gen = [fasta for fasta in parse(fin,'fasta') if len(fasta.seq) > size]
+    write(gen, fin.split(".fna")[0].split("/")[-1]+".filtered.fna", "fasta")
+    
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    subparsers = parser.add_subparsers()
+    parser_exseq = subparsers.add_parser("exseq", help="extract sequence from fasta")
+    parser_getscaf = subparsers.add_parser("getscaf", help="generate scaffolds from a given genome")
+    parser_seqsize = subparsers.add_parser("seqsize", help="get size of dna sequences in a fasta file")
+    parser_filsize = subparsers.add_parser("filsize", help="filter out smaller molecules")
+    parser_subnuc = subparsers.add_parser("subnuc", help="Change character (in all sequences) in the fasta file")
+    if len(sys.argv[1:]) == 0:
+        parser.print_help()
+        sys.exit()
+
+    parser_exseq.set_defaults(func=extractSeq)
+    parser_exseq.add_argument("fasta", help="fasta file", type=argparse.FileType('r'))
+    group = parser_exseq.add_mutually_exclusive_group(required = True)
+    group.add_argument("--loc", help="Location to extract: chr start end",nargs = 3)
+#    parser_exseq.add_argument()
+#    parser_exseq.add_argument("start", help = "start", type=int, default = 0)
+#    parser_exseq.add_argument("end",help="end",type = int, default=-1)
+    group.add_argument("--fin", help="File containing locations to extract", type=argparse.FileType('r'))
+    parser_exseq.add_argument("-o", help="Output file name", type=argparse.FileType('w'), default="out.fasta")
+    
+    
+    parser_getscaf.set_defaults(func=getScaf)
+    parser_getscaf.add_argument("fasta", help="genome fasta file", type=argparse.FileType('r'))
+    parser_getscaf.add_argument("n", help="number of scaffolds required", type=int)
+    parser_getscaf.add_argument("-o",help="output file name", default="scaf.fasta")
+    
+    parser_seqsize.set_defaults(func=seqsize)
+    parser_seqsize.add_argument("fasta", help="genome fasta file", type=argparse.FileType('r'))
+    
+    parser_filsize.set_defaults(func=filsize)
+    parser_filsize.add_argument("fasta", help="genome fasta file", type=argparse.FileType('r'))
+    parser_filsize.add_argument("size", help="molecule cut-off in bp, all smaller molecules will be filtered out", type=int,default=0)
+    
+    
+    parser_subnuc.set_defaults(func=subnuc)
+    parser_subnuc.add_argument("fasta", help = "genome fasta file", type=argparse.FileType('r'))
+    parser_subnuc.add_argument("q",help="character to change", default="", type=str)
+    parser_subnuc.add_argument("t",help="character to change to", default="", type = str)
+    parser_subnuc.add_argument("-o",help="output file name", type=argparse.FileType('w'))
+    
+    args = parser.parse_args()
+#    print(args)
+
+    try:
+        from reprlib import repr
+    except ImportError:
+        pass
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from scipy.stats import gaussian_kde
+    import operator as op
+    from functools import reduce
+    from Bio import SeqIO
+    from itertools import cycle
+    from sys import getsizeof, stderr
+    from itertools import chain
+    from collections import deque
+    from Bio.SeqIO import parse, write
+    from Bio.Seq import Seq
+    from Bio.SeqRecord import SeqRecord
+#    print(args)
+    args.func(args)
+
+else:
+    try:
+        from reprlib import repr
+    except ImportError:
+        pass
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from scipy.stats import gaussian_kde
+    import operator as op
+    from functools import reduce
+    from Bio import SeqIO
+    from itertools import cycle
+    from sys import getsizeof, stderr
+    from itertools import chain
+    from collections import deque
+    from Bio.SeqIO import parse, write
+    from Bio.Seq import Seq
+    from Bio.SeqRecord import SeqRecord
+    
