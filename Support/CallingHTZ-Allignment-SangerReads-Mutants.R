@@ -25,7 +25,7 @@ setwd("/srv/netscratch/dep_coupland/grp_schneeberger/projects/mutation_tree/Appl
 ls.contigs <- list("169395","86445","73519","73045","70184","67102","66618","55839","55541","52092","44842","44095","44093","38103","37991","36869","35959","33189","31473","29360","27387","25711","23019","21491","20799","20587","20119","16917","15327","15087","14393","13787","12691","12199","11153","10851","10473","10005","8965","8047","7726","7218","6517","5763","5501","5351","4941","4041","3993","3831","3723","3533","3117","3113","3018","2910","2884","2844","1690","1186","1168","1046","270","0218","212","88","74","34","14")	
 
 
-# Manish's alternative to for loop (much faster).
+# MG's alternative to for loop (much faster).
 ls.files<-list()
 ls.files <- lapply(ls.contigs, function(x){
   list.files(pattern = paste(x,".ab1$",sep=""));
@@ -37,7 +37,7 @@ names(ls.files) <- lapply(ls.contigs, function(x){
 })
 
 
-# Manish code to nested lapply, to use sangerseq in a list (mutations) of lists (samples)  
+# MG's code to nested lapply, to use sangerseq in a list (mutations) of lists (samples)  
 myAbifs <- lapply(ls.files, function(x){
   lapply(x, function(y){
     y = sangerseq(sangerseqR::read.abif(y))
@@ -53,9 +53,7 @@ for(i in 1:length(myAbifs)){
   names(myAbifs[[i]]) <- ls.files[[i]]
 }
 
-# Check the different access to elements using [ or [[ . First, one element (list of 21 elements--> ab1 for each sample); second, the content of the list (21 elements).
-length(myAbifs[1])
-length(myAbifs[[1]])
+# Chromatograph creation from raw ab1 files
 
 lapply(myAbifs, function(x){
   mynames <- names(x)
@@ -99,6 +97,7 @@ names(myBaseCalls[[1]][[1]])
 names(myBaseCalls[64])
 myBaseCalls[64]$`0218`$M57L.00218.ab1@traceMatrix
 myBaseCalls[64]$`0218`$M57L.00218.ab1@peakPosMatrix
+
 # Creation of the chromatogram after BaseCall
 lapply(myBaseCalls, function(x){
   finNames <- names(x)
@@ -123,7 +122,7 @@ lapply(myBaseCalls, function(x){
 unlist(strsplit('M1.169395.ab1',"[.]"))[[2]]
 
 
-# Create files 69 files with lapply. appending sequences to existing Fasta   
+# Create fasta files with lapply. Appending sequences to existing Fasta. We'll use these files to run the Clustal allignment.
 
 myBaseCalls[[1]]
 finNames <- names(myBaseCalls)
@@ -154,6 +153,7 @@ lapply(finNames, function(x){
 
 ls.fastaSangIllu <- list.files(pattern = ".fa$")
 
+# Allignment with ClustalW, from msa, and creation of msaPrettyPrint allignment figures.
 for (i in ls.fastaSangIllu){
   myseq <- readDNAStringSet(i, format = "FASTA")
   myseqPermuted <- order(names(myseq))
