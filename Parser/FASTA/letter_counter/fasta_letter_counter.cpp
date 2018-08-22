@@ -3,7 +3,6 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-
 using namespace std;
 //
 int main(int argc, char* argv[])
@@ -18,7 +17,6 @@ int main(int argc, char* argv[])
         cout << "Note: LETTER must be in upper case. \n" << endl;
         return 1;
     }
-    
     string fasfile = (string)argv[1];
     std::ifstream fp(fasfile.c_str());
     if(!fp.is_open())
@@ -26,7 +24,6 @@ int main(int argc, char* argv[])
         cout << "Cannot open file " << fasfile << " to read sequences, exited!" << endl;
         return 1;
     }
-    
     string letter = (string)argv[2];    
     unsigned long total_length = 0;
     long totanum = 0;
@@ -49,19 +46,15 @@ int main(int argc, char* argv[])
                 getline(fp, seqtmp);
             }
             cout << "    length of " << line.substr(1) << ": " << seq.size() << "; "; 
-            
             thisnum     = std::count(seq.begin(), seq.end(), letter[0]);
             totanum    += thisnum;
             cout << "number of " << letter << ": " << thisnum << endl;
-            
             total_length += seq.length();
-            
             line = seqtmp;
         }
     }
     fp.close();
     cout << "    total length of all sequences: " << total_length << endl;
     cout << "   Total number of " << argv[2] << " is: " << totanum << endl;
-    
     return 0;
 }
