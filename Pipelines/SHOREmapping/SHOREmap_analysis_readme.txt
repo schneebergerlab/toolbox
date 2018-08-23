@@ -31,25 +31,13 @@ cd ../genome_center/
 
 shore import -v fastq -e Shore -a genomic -x read_data.fq -o ../withSHORE/flowcell
 
-## check the statistics of import with
-
-less ../withSHORE/flowcell/import_statistic.txt
-
 ## align formatted reads to the indexed reference sequence (Option '-n' tells the program that the maximum number of edit distances is L*10%; '-g' tells the program that the maximum number of mismatches is L*7%, where L is the length of reads)
 
 shore mapflowcell -f ../withSHORE/flowcell -i ../withSHORE/index/S.imulated.ref.fa.shore -n 10% -g 7%
 
-## check the mapping log
-
-less ../withSHORE/flowcell/mapping.log
-
 ## run the consensus-calling program to predict the mutations (SNPs, indels, and SV)
 
 shore consensus -n example1 -f ../withSHORE/index/S.imulated.ref.fa.shore -o ../withSHORE/consensus_het -i ../withSHORE/flowcell/1/single/map.list.gz -g 5 -a /srv/netscratch/dep_coupland/grp_schneeberger/bin/shore/scoring_matrix_het.txt -v
-
-## check the log file
-
-less ../withSHORE/consensus_het/config.log
 
 ###################################################################################################
 # step 2: mapping-by-sequencing 
@@ -77,10 +65,6 @@ SHOREmap extract --chrsizes ../data/chrsizes.txt --marker consensus_het/Consensu
 
 SHOREmap backcross --chrsizes ../data/chrsizes.txt --marker consensus_het/ConsensusAnalysis/quality_variant.txt --consen consensus_het/ConsensusAnalysis/extracted_consensus\_0.txt --folder MBS --marker-score 2 --marker-freq 0.2 --cluster 1 -plot-bc
 
-## check files the folder MBS and list results with the commands,
-
-ls MBS -lahF
-
 ## check visualization of AFs is in BC_AF_visualization_1_boost.pdf
 
 xpdf MBS/BC_AF_visualization_1_.pdf
@@ -97,6 +81,3 @@ SHOREmap annotate --chrsizes ../data/chrsizes.txt --snp consensus_het/ConsensusA
 ## which describes mutations and their effect on gene integrity. 
 ## For example, non-synonymous changes: 1   4137    G   A is more likely to be responsbile for the phenotype. 
 ## Meanwhile, there is an additional file ref_and_eco_coding_seq.txt, which collects gene and protein sequences.
-
-less MBS_annotation/prioritized_snp_1_2500_6500_peak1.txt
-less MBS_annotation/ref_and_eco_coding_seq.txt
