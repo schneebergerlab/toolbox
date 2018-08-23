@@ -1,5 +1,4 @@
-
-## step 0): Prepare working environment
+# step 0): Prepare working environment
 Tools :
   EVM
   AUGUSTUS  
