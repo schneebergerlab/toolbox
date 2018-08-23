@@ -1,0 +1,3 @@
+#?lane	sample	read	total_reads	post_filter	single	paired	quality_filtered	ambiguity_filtered	low_complexity_filtered	trim_failed	early_adapter	late_adapter	cant_decide_adapter	missing_adapter	bad_barcode_filtered	100
+1	0	1	24000	24000	24000	0	0	0	0	0	0	0	0	0	0	24000
+

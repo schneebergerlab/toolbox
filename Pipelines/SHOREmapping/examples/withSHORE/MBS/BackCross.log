@@ -1,0 +1,31 @@
+Inputs provided:
+
+--chrsizes 	../data/chrsizes.txt
+--cluster 	1
+--consen 	consensus_het/ConsensusAnalysis/extracted_consensus_0.txt
+--folder 	MBS
+--marker 	consensus_het/ConsensusAnalysis/quality_variant.txt
+--marker-freq 	0.2
+--marker-score 	2
+-plot-bc 	true
+
+
+Outputs achieved:
+
+
+Foreground markers (not bg-corrected):
+		consensus_het/ConsensusAnalysis/quality_variant.txt
+
+FG markers in consensus_het/ConsensusAnalysis/quality_variant.txt (filtered according to self-quality, concordance and EMS): 
+		MBS/SHOREmap_marker.no_correction_ic1_q2
+		MBS/SHOREmap_marker.no_correction_ic1_q2_f20.0
+By default, if EMS is not specified, visualized markers are in: MBS/SHOREmap_marker.no_correction_ic1_q2_f20.0
+. 
+
+Visualization done on markers of MBS/SHOREmap_marker.no_correction_ic1_q2_f20.0. 
+
+
+Backcross function successfully finished on Thu Aug 23 12:16:02 2018
+
+
+Time consumed 0.0719 seconds.

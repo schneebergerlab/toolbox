@@ -1,0 +1,26 @@
+#shore preprocess ver. 0.8unstable (rev. 3254-2108) [Thu Aug 23 12:10:18 2018]
+# shore preprocess -f S.imulated.ref.fa -i ../withSHORE/index
+# (host: pc-t7-143, pid: 8832, wd: /srv/netscratch/dep_coupland/grp_schneeberger/bin/bin/grp_github_toolbox/toolbox/Pipelines/SHOREmapping/examples/data)
+# -f, --fastafile=STRING[,...]  (=S.imulated.ref.fa)
+# -i, --indexfolder=STRING      (=../withSHORE/index)
+# -s, --seed=INT[,...]          (=12)
+# -U, --ssuff                   (off)
+# -b, --bowtie                  (off)
+# -n, --novo                    (off)
+# -e, --eland                   (off)
+# -p, --gsnap                   (off)
+# -t, --blat                    (off)
+# -W, --bwa                     (off)
+#     --bwa-construction=STRING (=is)
+# -g, --no-genomemapper         (off)
+# -B, --bsseq                   (off)
+# -c, --complexity=INT          (=9)
+# -w, --gccontent=INT           (=101)
+# -C, --build-colorspace-index  (off)
+# -V, --variation-files=STRING  (not set)
+#     --upgrade                 (off)
+#     --maxsize=INT             (not set)
+### 1: 1
+### 2: 2
+### /srv/netscratch/dep_coupland/grp_schneeberger/bin/genomemapper-0.4.4//gmindex -i ../withSHORE/index/seed12/S.imulated.ref.fa.shore -s 12
+#shore preprocess: done [Thu Aug 23 12:10:18 2018]

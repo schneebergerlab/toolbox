@@ -1,0 +1,12 @@
+Inputs provided:
+
+--chrsizes 	../data/chrsizes.txt
+--consen 	consensus_het/ConsensusAnalysis/supplementary_data/consensus_summary.txt
+--folder 	consensus_het/ConsensusAnalysis
+--marker 	consensus_het/ConsensusAnalysis/quality_variant.txt
+
+
+Outputs achieved:	consensus_het/ConsensusAnalysis/extracted_consensus_0.txt
+
+Extract function successfully finished on Thu Aug 23 12:12:09 2018
+

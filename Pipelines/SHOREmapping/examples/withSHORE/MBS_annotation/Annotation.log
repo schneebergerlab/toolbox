@@ -1,0 +1,19 @@
+Inputs provided:
+
+--chrom 		1
+--chrsizes 	../data/chrsizes.txt
+--end 		6500
+--folder 	MBS_annotation
+--genome 	../data/S.imulated.ref.fa
+--gff 		../data/S.imulated.gff
+--snp 		consensus_het/ConsensusAnalysis/quality_variant.txt
+--start 		2500
+-verbose 	true
+
+Annotation of SNPs done: MBS_annotation/prioritized_snp_1_2500_6500_peak1.txt.
+
+
+Outputs achieved.
+
+Annotate function successfully finished on Thu Aug 23 12:18:07 2018
+

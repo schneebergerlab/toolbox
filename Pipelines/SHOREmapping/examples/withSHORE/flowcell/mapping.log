@@ -1,0 +1,49 @@
+# [pc-t7-143:thread 0] #shore mapflowcell ver. 0.8unstable (rev. 3254-2108) [Thu Aug 23 12:10:52 2018]
+# shore mapflowcell -f ../withSHORE/flowcell -i ../withSHORE/index/S.imulated.ref.fa.shore -n 10% -g 7%
+# (host: pc-t7-143, pid: 8868, wd: /srv/netscratch/dep_coupland/grp_schneeberger/bin/bin/grp_github_toolbox/toolbox/Pipelines/SHOREmapping/examples/genome_center)
+# -f, --files=STRING[,...]     (=../withSHORE/flowcell)
+# -i, --index-file=STRING      (=../withSHORE/index/S.imulated.ref.fa.shore)
+# -v, --mapper=STRING          (=genomemapper)
+# -C, --color                  (off)
+# -B, --HSO                    (off)
+# -n, --edit-distance=INT[%]   (=10%)
+# -g, --maxgaps=INT[%]         (=7%)
+# -e, --gapextension=INT[%]    (not set)
+# -q, --hamming=INT[%]         (not set)
+# -l, --seed=INT[%]            (=15%)
+# -s, --seed-threshold=INT     (not set)
+#     --restrict-ED=STRING     (=off)
+# -c, --cores=INT              (=1)
+# -b, --batch-size=INT         (=50000)
+# -M, --native-cores=INT       (=1)
+# -R, --report=INT             (not set)
+# -r, --suboptimal=INT         (not set)
+# -a, --all-hit-strategy       (off)
+# -2, --best2-strategy         (off)
+#     --select-seeds=INT[,...] (not set)
+# -P, --upgrade=STRING         (=off)
+# -S, --spliced                (off)
+# -D, --maxintron=INT          (=1000)
+# -L, --minhit=INT             (=17)
+# -p, --PE                     (off)
+# -Z, --nocompress-maplist     (off)
+# -Y, --nocompress-leftover    (off)
+#     --rplot                  (off)
+# [pc-t7-143:thread 0]  file: //srv/netscratch/dep_coupland/grp_schneeberger/bin/bin/grp_github_toolbox/toolbox/Pipelines/SHOREmapping/examples/withSHORE/flowcell/1/single/reads_0.fl.gz
+# [pc-t7-143:thread 0]  saving refseq dictionary
+# [pc-t7-143:thread 0] preparing reads: //srv/netscratch/dep_coupland/grp_schneeberger/bin/bin/grp_github_toolbox/toolbox/Pipelines/SHOREmapping/examples/withSHORE/flowcell/1/single/reads_0.fl.gz
+# [pc-t7-143:thread 0] updating refseq dictionary //srv/netscratch/dep_coupland/grp_schneeberger/bin/bin/grp_github_toolbox/toolbox/Pipelines/SHOREmapping/examples/withSHORE/flowcell/1/single/ref.txt
+# [pc-t7-143:thread 1] batching...
+# [pc-t7-143:thread 1] ...done batching
+# [pc-t7-143:thread 1] alignment: /tmp/mapflowcell_kLlBdn/batch_KHphEt
+# [pc-t7-143:thread 1] /srv/netscratch/dep_coupland/grp_schneeberger/bin/genomemapper-0.4.4//genomemapper -e -i ../withSHORE/index/S.imulated.ref.fa.shore -q /tmp/mapflowcell_kLlBdn/batch_KHphEt/reads_0.fl -o /tmp/mapflowcell_kLlBdn/batch_KHphEt/map.list -u /tmp/mapflowcell_kLlBdn/batch_KHphEt/left_over.fl -E 10 -M 10 -G 7 -x 10 -l 15
+# [pc-t7-143:thread 1] genomemapper returned success for query "/tmp/mapflowcell_kLlBdn/batch_KHphEt/reads_0.fl"
+# [pc-t7-143:thread 1] sorting /tmp/mapflowcell_kLlBdn/batch_KHphEt/left_over.fl
+# [pc-t7-143:thread 1] sorting /tmp/mapflowcell_kLlBdn/batch_KHphEt/map.list (1)
+# [pc-t7-143:thread 1] gathering alignment statistics for 24000 reads (/tmp/mapflowcell_kLlBdn/batch_KHphEt)
+# [pc-t7-143:thread 1] gathering leftover statistics for 24000 reads (/tmp/mapflowcell_kLlBdn/batch_KHphEt)
+# [pc-t7-143:thread 0] incoming batch: 0.0
+# [pc-t7-143:thread 0] finalizing task 0 (1 batches)
+# [pc-t7-143:thread 0]  merging into //srv/netscratch/dep_coupland/grp_schneeberger/bin/bin/grp_github_toolbox/toolbox/Pipelines/SHOREmapping/examples/withSHORE/flowcell/1/single/map.list.gz
+# [pc-t7-143:thread 0]  merging into //srv/netscratch/dep_coupland/grp_schneeberger/bin/bin/grp_github_toolbox/toolbox/Pipelines/SHOREmapping/examples/withSHORE/flowcell/1/single/left_over.fl.gz
+# [pc-t7-143:thread 0] finalize done

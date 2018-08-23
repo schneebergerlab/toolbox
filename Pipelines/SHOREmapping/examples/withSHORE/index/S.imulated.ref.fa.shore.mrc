@@ -1,0 +1,1 @@
+seed12/S.imulated.ref.fa.shore.mrc

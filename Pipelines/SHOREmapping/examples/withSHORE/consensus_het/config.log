@@ -1,0 +1,39 @@
+###################################################################
+shore::consensus log:
+Command: shore consensus -n example1 -f ../withSHORE/index/S.imulated.ref.fa.shore -o ../withSHORE/consensus_het -i ../withSHORE/flowcell/1/single/map.list.gz -g 5 -a /srv/netscratch/dep_coupland/grp_schneeberger/bin/shore/scoring_matrix_het.txt -v
+Using reference based consensus
+Project name: example1
+Application (assay type): genomic
+
+Sanger calibrated Qvalue threshold: 5
+Cvalue (chastity) threshold: -1
+
+Consensus minimum coverage: 3
+Maximum observed to expected coverage: 3
+Minimum observed to expected coverage: 0.1
+Consensus minimum frequency (homozygous pos): 0.8
+Consensus minimum frequency (heterozygous pos): 0.25
+Consensus minimum frequency (minor allele): 0.02
+Consensus max quality threshold: 10
+
+Minimum allele freq: 0.2
+Main data directory: ../withSHORE/consensus_het
+Prediction output directory: ../withSHORE/consensus_het/ConsensusAnalysis
+Statistics output directory: 
+Alignment (map.list file): ../withSHORE/flowcell/1/single/map.list.gz
+Genome sequence (fasta file): ../withSHORE/index/S.imulated.ref.fa.shore
+Scoring matrix file: /srv/netscratch/dep_coupland/grp_schneeberger/bin/shore/scoring_matrix_het.txt
+
+
+shore parameter estimation:
+Min read length: 100
+Max read length: 100
+Max mismatches : 7
+Core offset    : 5
+
+
+Sequencing depth estimation (unique bases sequenced / unique positions = sequencing depth):
+DEPTH GENOME: 2118800 / 56268 = 37.6555
+
+DEPTH CHR-1: 1209900 / 33198 = 36.445
+DEPTH CHR-2: 908900 / 23070 = 39.3975
