@@ -1,0 +1,7 @@
+# Install: from termal go to buildserver, type 
+
+make
+
+# example
+
+GC_calculator /biodata/dep_coupland/grp_schneeberger/data/Athal/TAIR10/shore_new/TAIR10_chr_all.fas.shore windows.bed
