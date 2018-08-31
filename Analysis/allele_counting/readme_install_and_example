@@ -1,3 +1,5 @@
+# Function: get parental allele read counts at given snp markers -- genotyping/genome reconstruction.
+
 # Install: from termal go to buildserver, enter 
 
 make
