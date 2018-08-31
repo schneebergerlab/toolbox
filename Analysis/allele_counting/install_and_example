@@ -1,0 +1,18 @@
+# Install: from termal go to buildserver, enter 
+
+make
+
+# Example
+
+	marker_allele_count snp_markers.txt consensus.txt outprefix
+
+	## input file format
+	##
+		snp_markers.txt, each line: proj_name	chr	position	ref/allele1	ref/allele2 ...
+	
+	 			      e.g., proj_check	chr1H	287990	C	T
+	##
+		consensus.txt,   each line: chr	positions	consensus_allele	total_read_coverage	A_read	C_read	G_read	T_read	Del_read	N_reads	..
+				      e.g., chr1H	287990	C	17	0	10	0	5	0	2	..
+				      
+# Bug report: sun@mpipz.mpg.de				      
