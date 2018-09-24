@@ -1,14 +1,23 @@
 #! /usr/bin/perl
 use strict;
 use warnings;
+use Getopt::Long;
 
+my $usage = "$0 fasta --size=105236502 --format=tsv\n";
 
-my $usage = "$0 fasta [targetSize(=105236502)]\n";
 my $file = shift or die $usage;
-my $size = shift;
+my $size; #= shift;
+my $format; #= shift;
 
+
+GetOptions(
+#    "file=s"        => \$file,
+    "size=i"       => \$size,         # string
+    "format=s"     => \$format,       # int
+);
 ###########################################################
 # Read in file
+
 open FILE, $file or die $usage;
 
 my %CTG_LTH = ();
@@ -18,6 +27,7 @@ my $num_n = 0;
 my $count = 0;
 
 while (my $line = <FILE>) {
+#    print $line;
 	chomp($line);
 	if (substr($line, 0, 1) eq ">") {
 		if ($seq ne "") {
@@ -73,17 +83,30 @@ foreach my $length (sort {$b <=> $a} keys %CTG_LTH) {
         }
 }
 
-print "################\n";
-print "Total scaffold count:\t\t$count\n";
-print "Total scaffold length:\t\t$cum_lth\n";
-print "Longest scaffold:\t\t$max\n";
-print "Shortest scaffold:\t\t$min\n";
-print "################\n";
-print "Sequence information:\t\t"; printf("%.3f", 100*(1-$num_n/$cum_lth)); print "%\n";
-print "Total number ambiguous bases:\t$num_n\n";
-print "################\n";
-print "# Intrinsic:\n";
-print "N50/L50:\t\t\t", $N50, " / ", $L50, "\n";
+if ($format eq "tsv"){
+    print "Total_scaffold_count\t$count\n";
+    print "Total_scaffold_length\t$cum_lth\n";
+    print "Longest_scaffold\t$max\n";
+    print "Shortest_scaffold\t$min\n";
+    print "Sequence_information\t"; printf("%.3f", 100*(1-$num_n/$cum_lth)); print "%\n";
+    print "Total_number_ambiguous_bases\t$num_n\n";
+    print "N50\t$L50\n";
+    print "L50\t$N50\n";
+    
+}
+else{
+    print "################\n";
+    print "Total scaffold count:\t\t$count\n";
+    print "Total scaffold length:\t\t$cum_lth\n";
+    print "Longest scaffold:\t\t$max\n";
+    print "Shortest scaffold:\t\t$min\n";
+    print "################\n";
+    print "Sequence information:\t\t"; printf("%.3f", 100*(1-$num_n/$cum_lth)); print "%\n";
+    print "Total number ambiguous bases:\t$num_n\n";
+    print "################\n";
+    print "# Intrinsic:\n";
+    print "N50/L50:\t\t\t", $N50, " / ", $L50, "\n";
+}
 if (defined($size)) {
 print "################\n";
 print "# Target genome:\n";
