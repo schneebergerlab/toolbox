@@ -1,0 +1,7 @@
+# under the folder of the source code
+
+make
+
+# usage:
+
+fasta_name_selecter a.lines.head2591.fasta seqname.txt
