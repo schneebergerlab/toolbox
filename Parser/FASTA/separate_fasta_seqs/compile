@@ -1,0 +1,7 @@
+# under the folder of the source code
+
+make
+
+# usage:
+
+Usage: fasta_separator seq.fa
