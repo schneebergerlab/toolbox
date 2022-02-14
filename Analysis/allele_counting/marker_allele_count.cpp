@@ -144,7 +144,7 @@ bool read_consensus(string consensus_file, map<string, ALLELE>* markers)
         // chr1H	1609376	C	12	A:0	C:10	G:0	T:0	D:0	N:2	1
         vector<string> lineinfo = split_string(line, '\t');
         
-        string key = lineinfo[0].substr(3) + "\t" + lineinfo[1];
+        string key = lineinfo[0] + "\t" + lineinfo[1];
         
         if( (*markers).find(key) != (*markers).end() )
         {     
